@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for qq_news project
+# Scrapy settings for douban project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,14 +9,16 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'qq_news'
+BOT_NAME = 'douban'
 
-SPIDER_MODULES = ['qq_news.spiders']
-NEWSPIDER_MODULE = 'qq_news.spiders'
+SPIDER_MODULES = ['douban.spiders']
+NEWSPIDER_MODULE = 'douban.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'qq_news (+http://www.yourdomain.com)'
+from faker import Factory
+f = Factory.create()
+USER_AGENT = f.user_agent()
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -39,6 +41,13 @@ ROBOTSTXT_OBEY = True
 #TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
+DEFAULT_REQUEST_HEADERS = {
+    'Host': 'book.douban.com',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Connection': 'keep-alive',
+}
 #DEFAULT_REQUEST_HEADERS = {
 #   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 #   'Accept-Language': 'en',
@@ -47,13 +56,13 @@ ROBOTSTXT_OBEY = True
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'qq_news.middlewares.QqNewsSpiderMiddleware': 543,
+#    'douban.middlewares.MyCustomSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'qq_news.middlewares.MyCustomDownloaderMiddleware': 543,
+#    'douban.middlewares.MyCustomDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -64,9 +73,11 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'qq_news.pipelines.QqNewsPipeline': 300,
-#}
+ITEM_PIPELINES = {
+    #'douban.pipelines.DoubanBookPipeline': 300,
+    #'douban.pipelines.DoubanMailPipeline': 600,
+    'douban.pipelines.DoubanMovieCommentPipeline': 900,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
