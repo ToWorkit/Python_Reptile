@@ -13,6 +13,7 @@ ml_base/.ipynb_checkpoints
 
 # Editor directories and files
 .idea
+*/.idea/
 *.suo
 *.ntvs*
 *.njsproj
