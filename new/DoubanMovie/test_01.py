@@ -1,4 +1,5 @@
 import requests
+import re
 from bs4 import BeautifulSoup as bs
 
 headers = {
@@ -49,4 +50,41 @@ def get_movie_comment():
   # 找到评论标签
   comment_conent = soup_obj.find_all('div', class_='comment')
   # 获取到评论内容
-  eachCommentList
+  eachCommentList = []
+  for item in comment_conent:
+    # find_all -> list
+    if item.find_all('p')[0].string is not None:
+      eachCommentList.append(item.find_all('p')[0].string)
+  return eachCommentList
+
+
+''' 数据清洗 '''
+def data_cleaning():
+  comments = ''
+  comment_data = get_movie_comment()
+  for k in range(len(comment_data)):
+    comments = comments + (str(comment_data[k])).strip()
+  # 去掉标点符号
+  pattern = re.compile(r'[\u4e00-\u9fa5]+')
+  filter_data = re.findall(pattern, comments)
+  # 清洗后的数据
+  cleaned_comments = ''.join(filter_data)
+  return cleaned_comments
+
+# 结巴分词
+import jieba
+import pandas as pd
+
+# 分割 -> 直接返回 list
+segment = jieba.lcut(data_cleaning())
+# 生成表格
+words_df = pd.DataFrame({'segment': segment})
+# 去除停用词(高频出现的词)
+# https://www.cnblogs.com/datablog/p/6127000.html -> 参数说明
+stopwords = pd.read_csv('StopWords.txt', index_col=False, quoting=3, sep="\t", names=['stopword'], encoding='utf-8')
+words_df = words_df[~words_df.segment.isin(stopwords.stopword)]
+
+# 词频统计
+import numpy
+words_stat = words_df.groupby(by=['segment'])['segment'].agg({'计数': numpy.size})
+words_stat = words_stat.reset_index().sort_values(by=['计数'], ascending=False)
