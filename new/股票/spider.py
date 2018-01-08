@@ -1,5 +1,6 @@
 import re
 import requests
+import json
 from bs4 import BeautifulSoup
 
 '''
@@ -29,3 +30,85 @@ class Spider(object):
     except:
       print('HTTPError 连接错误')
       return None
+
+  # 东方财富股票代码号
+  def eastMoney(self):
+    url = 'http://quote.eastmoney.com/stocklist.html'
+    html_data = self.getPage(url)
+    # 股票代码容器
+    quotesearch = html_data.find_all('div', id='quotesearch')
+    # print(quotesearch)
+    # 获取代码
+    a_list = []
+    a_item = map(lambda x: x.find_all('a'), quotesearch)
+    for i in list(a_item)[0]:
+      # print(i.attrs['href'])
+      try:
+        if i.attrs['href'] is not None:
+          href = i.attrs['href']
+          # print(href)
+          a_list.append(re.findall(r'[s][hz]\d{6}', href)[0])
+      except:
+        # print('获取代码出错')
+        # 跳过不符合的项
+        continue
+    return a_list
+  # 根据获取的股票代码抓取百度股市通的股票详情
+  def getStockDetails(self, stock_list):
+  # def getStockDetails(self):
+    '''url = 'https://gupiao.baidu.com/stock/sh000001.html'
+    html_data = self.getPage(url)
+    
+    stock_bets = html_data.find('div', attrs={'class': 'stock-bets'})
+    name = stock_bets.find('a', attrs={'class': 'bets-name'})
+    stock_data = {}
+    stock_data.update({'名称': name.text.strip()})
+    stock_data['list'] = []
+    # 参数项
+    bets_content_col = stock_bets.find('div', attrs={'class': 'bets-col-9'})
+    for i in bets_content_col.find_all('dl'):
+      _list = {}
+      _list['name'] = i.find('dt').text
+      _list['value'] = i.find('dd').text
+      stock_data['list'].append(_list)
+    print(stock_data)'''
+
+    
+    url = 'https://gupiao.baidu.com/stock/{}.html'
+    stock_data = {}
+    stock_data['list'] = []
+    for i in stock_list:
+      html_data = self.getPage(url.format(i))
+      # 容错处理
+      try:
+        if html_data == "":
+          continue
+        # find
+        stock_bets = html_data.find('div', attrs={'class': 'stock-bets'})
+        name = stock_bets.find('a', attrs={'class': 'bets-name'})
+        # 添加
+        stock_data.update({'名称': name.text.strip()})
+        # 参数项
+        bets_content_col = stock_bets.find('div', attrs={'class': 'bets-content'})
+        for i in bets_content_col.find_all('dl'):
+          _list = {}
+          _list['name'] = i.find('dt').text
+          _list['value'] = i.find('dd').text
+          stock_data['list'].append(_list)
+        with open('Stock.txt', 'a', encoding='utf-8') as f:
+          # 不进行ascii转码(不设置中文会自动被转为ASCII码)
+          f.write(json.dumps(stock_data, ensure_ascii=False) + '\n')
+      except:
+        print('有错误')
+        continue
+    # print(stock_data)
+
+    
+  # 主函数
+  def main(self):
+    # self.eastMoney()
+    self.getStockDetails(self.eastMoney()[100: 102])
+    # self.getStockDetails()
+
+if __name__ == '__main__':
+  main = Spider().main()
