@@ -22,8 +22,8 @@ def change_name(path):
         #    print('ok---'+file_ext)
     elif os.path.isdir(path):
         for x in os.listdir(path):
-            change_name(os.path.join(path,x)) #os.path.join()在路径处理上很有用
-
+            #os.path.join()在路径处理上很有用
+            change_name(os.path.join(path,x)) 
 
 img_dir = 'D:\\xx\\xx\\images'
 img_dir = img_dir.replace('\\','/')
@@ -36,7 +36,6 @@ print('总共处理了 %s 张图片'%(i))
 
 '''
 输出结果：
-
 程序运行耗时:0.11
 总共处理了 109 张图片
 '''
