@@ -1,0 +1,7 @@
+问题文章
+  标题
+  关注数
+  标签
+
+# 运行并将结果写入csv文件
+scrapy runspider spider.py -o question.csv
