@@ -49,6 +49,10 @@ class Parse {
   async getBook() {
     await this.page.goto(url);
     let page = await this.page
+    /**
+     * 也可以不等待ajax请求直接抓取DOM元素
+     * _page.mainFrame().waitForSelector
+     */
     // console.log(page)
     // 获取请求完成的信息
     page.on('requestfinished', request => {
