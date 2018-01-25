@@ -1,5 +1,8 @@
 import re
 import time
+# https://seleniumhq.github.io/selenium/docs/api/py/api.html
+# http://www.cnblogs.com/mengyu/category/950040.html
+# http://selenium-python.readthedocs.io/api.html
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -10,13 +13,23 @@ from pyquery import PyQuery as pq
 from config import *
 # mongo
 import pymongo
+chromeOptions = webdriver.ChromeOptions()
 # 连接
 client = pymongo.MongoClient(MONGO_URL)
 # 获取游标
 db = client[MONGO_DB]
-
+# 设置代理
+# chromeOptions.add_argument("--proxy-server=183.186.86.171:80")
+# 启动
+# browser = webdriver.Chrome(chrome_options = chromeOptions)
 browser = webdriver.Chrome()
+# 等待
 wait = WebDriverWait(browser, 10)
+
+# 查看本机ip，查看代理是否起作用
+# browser.get("http://httpbin.org/ip")
+# print(browser.page_source)
+
 
 def search():
   try:
@@ -42,6 +55,7 @@ def search():
     # 等待页数加载完毕
     total = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#mainsrp-pager > div > div > div > div.total')))
     get_products()
+    # print(total.text)
     return total.text
   except Exception:
     print('获取页数出错')
@@ -88,6 +102,7 @@ def get_products():
   doc = pq(html)
   # 获取所有的
   items = doc('#mainsrp-itemlist .items .item').items()
+  # print(items)
   for item in items:
     product = {
       # 获取属性值

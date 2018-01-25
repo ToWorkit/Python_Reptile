@@ -38,3 +38,4 @@ class StackOverFlowSpider(scrapy.Spider):
       'tags': response.css('.questions .post-tag::text').extract(),
       'link': response.url,  
     }
+obj = StackOverFlowSpider()
