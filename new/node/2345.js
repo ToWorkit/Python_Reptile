@@ -4,9 +4,9 @@ var child_process = require('child_process');
 function sleep(second) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-        resolve(' enough sleep~');
-    }, second);
-})
+            resolve(' enough sleep~');
+        }, second);
+    })
 }
 
 var arguments = process.argv.splice(2);
@@ -18,7 +18,7 @@ var book_info = {};
 
 (async ()=>{
     try{
-        // 是否显示浏览器，false显示，true不显示
+        // 是否显示浏览器
         var browser = await puppeteer.launch({
           'headless': false,
         });
@@ -35,7 +35,7 @@ var book_info = {};
         var book_info_url=`http://book.km.com/shuku/${book_id}.html`
         await page.goto(book_info_url);
         // 使用document的方式
-        var book_info = await page.evaluate(()=>{
+/*        var book_info = await page.evaluate(()=>{
             var book_name = document.querySelector("#xtopjsinfo > div.container.clearfix > div > div.col_a > div.abook.clearfix > div.tit_bg > h2").innerText;
             var des = document.querySelector("#xtopjsinfo > div.container.clearfix > div > div.col_a > div.abook.clearfix > div.summary > p.desc").innerText;
             return {
@@ -43,7 +43,7 @@ var book_info = {};
                 "book_name":book_name
             }
         });
-        console.log(book_info);
+        console.log(book_info);*/
         // 章节列表
         await page.goto(chapter_list_url);
         // 使用css选择器的方式
