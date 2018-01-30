@@ -37,7 +37,7 @@ class Parse {
     });
     this.page = await this.browser.newPage();
     // 设置信息
-    const UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/63.0.3239.84 Chrome/63.0.3239.84 Safari/537.36";
+    const UA = "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Mobile Safari/537.36";
     await Promise.all([
         this.page.setUserAgent(UA),
         this.page.setJavaScriptEnabled(true),
