@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer')
 const mongodb = require('mongodb')
-const mongo_url = 'mongodb://118.190.43.138:27017/book'
+const mongo_url = 'mongodb://127.0.0.1:27017/book'
 const mongoClient = mongodb.MongoClient
 async function sleep(second) {
   return new Promise((resolve, reject) => {

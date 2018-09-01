@@ -6,7 +6,7 @@ let express = require('express')
 let axios = require('axios')
 let qs = require('qs')
 let app = express()
-const mongo_url = 'mongodb://118.190.43.138:27017/book'
+const mongo_url = 'mongodb://127.0.0.1:27017/book'
 const mongoClient = mongodb.MongoClient
 
 var _arguments = process.argv.splice(2);

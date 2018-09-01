@@ -4,7 +4,7 @@ var fs = require('fs')
 let axios = require('axios')
 let qs = require('qs')
 const mongodb = require('mongodb')
-const mongo_url = 'mongodb://118.190.43.138:27017/book'
+const mongo_url = 'mongodb://127.0.0.1:27017/book'
 const mongoClient = mongodb.MongoClient
 
 function sleep(second) {
